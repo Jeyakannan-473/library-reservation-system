@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Library Seat Reservation System</title>
+<link rel="stylesheet" href="/css/style.css">
+<script>
+  // Leave this empty ('') if this same server also serves the frontend
+  // (the default setup). If you host the frontend separately from the
+  // backend, set this to the backend's full URL, e.g.:
+  //   window.API_BASE_URL = 'https://your-backend.onrender.com';
+  window.API_BASE_URL = '';
+</script>
+</head>
+<body>
+
+<!-- ===================== WELCOME / ROLE SELECT ===================== -->
+<div id="screen-welcome" class="art-bg">
+  <div class="bookshelf" id="bookshelf"></div>
+  <div id="floaties"></div>
+  <div class="art-content">
+    <div style="font-size:48px;">📚</div>
+    <h1 id="institution-name">Nationwide Institute of Technology</h1>
+    <p class="subtitle">Occupancy-Aware Smart Library Seat Reservation System</p>
+    <div class="role-cards">
+      <div class="role-card" onclick="showScreen('admin-login')">
+        <div class="icon">🛡</div>
+        <h2>Admin Portal</h2>
+        <p>Manage seats, monitor<br>occupancy &amp; view reports.</p>
+        <button class="btn btn-primary">Continue →</button>
+      </div>
+      <div class="role-card" onclick="showScreen('student-login')">
+        <div class="icon">🎓</div>
+        <h2>Student Portal</h2>
+        <p>Book a seat, check in/out,<br>and track your usage.</p>
+        <button class="btn btn-primary">Continue →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== ADMIN LOGIN ===================== -->
+<div id="screen-admin-login" class="art-bg hidden">
+  <div class="auth-card">
+    <h2>🛡 Admin Login</h2>
+    <label class="field-label">Admin ID</label>
+    <input class="field-input" id="admin-id" placeholder="ADMIN1001">
+    <label class="field-label">Password</label>
+    <input class="field-input" type="password" id="admin-password">
+    <button class="btn btn-primary btn-block" onclick="doLogin('ADMIN')">LOGIN</button>
+    <div class="error-text" id="admin-login-error"></div>
+    <div class="hint-text">Demo admin: ADMIN1001 / Admin@123</div>
+    <button class="back-link" onclick="showScreen('welcome')">← Back</button>
+  </div>
+</div>
+
+<!-- ===================== STUDENT LOGIN ===================== -->
+<div id="screen-student-login" class="art-bg hidden">
+  <div class="auth-card">
+    <h2>🎓 Student Login</h2>
+    <label class="field-label">College Email</label>
+    <input class="field-input" id="student-id" placeholder="student@library.edu">
+    <label class="field-label">Password</label>
+    <input class="field-input" type="password" id="student-password">
+    <button class="btn btn-primary btn-block" onclick="doLogin('STUDENT')">LOGIN</button>
+    <div class="error-text" id="student-login-error"></div>
+    <button class="btn-link" style="display:block;width:100%;text-align:center;margin-top:12px;" onclick="showScreen('register')">Create a student account</button>
+    <div class="hint-text">Demo student: student@library.edu / Student@123</div>
+    <button class="back-link" onclick="showScreen('welcome')">← Back</button>
+  </div>
+</div>
+
+<!-- ===================== REGISTER ===================== -->
+<div id="screen-register" class="art-bg hidden">
+  <div class="auth-card wide">
+    <h2>Create Student Account</h2>
+    <div class="register-grid">
+      <div><label class="field-label">Full Name</label><input class="field-input" id="reg-name"></div>
+      <div><label class="field-label">Student ID / Register No.</label><input class="field-input" id="reg-regno"></div>
+      <div><label class="field-label">College Email</label><input class="field-input" id="reg-email"></div>
+      <div><label class="field-label">Mobile Number</label><input class="field-input" id="reg-mobile"></div>
+      <div><label class="field-label">Department</label><input class="field-input" id="reg-dept"></div>
+      <div>
+        <label class="field-label">Academic Year</label>
+        <select class="field-input" id="reg-year">
+          <option>1st Year</option><option>2nd Year</option><option selected>3rd Year</option><option>4th Year</option>
+        </select>
+      </div>
+      <div><label class="field-label">Password</label><input class="field-input" type="password" id="reg-password"></div>
+      <div><label class="field-label">Confirm Password</label><input class="field-input" type="password" id="reg-password2"></div>
+    </div>
+    <div class="error-text" id="register-error"></div>
+    <div style="display:flex; gap:12px; justify-content:center; margin-top:8px;">
+      <button class="btn btn-secondary" onclick="showScreen('student-login')">Back to Login</button>
+      <button class="btn btn-primary" onclick="doRegister()">Register</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== APP SHELL (post-login) ===================== -->
+<div id="screen-app" class="app-shell hidden">
+  <div class="sidebar">
+    <div class="brand">📚 LIBRARY</div>
+    <nav id="sidebar-nav"></nav>
+    <button class="nav-item" onclick="logout()">↪ Logout</button>
+    <div class="role-label" id="role-label"></div>
+  </div>
+  <div class="main-area">
+    <div class="topbar">
+      <h1 id="page-title">Dashboard</h1>
+      <button class="bell-btn" id="bell-btn" onclick="openNotifications()">🔔 <span id="unread-count">0</span></button>
+    </div>
+    <div class="content" id="content"></div>
+  </div>
+</div>
+
+<div id="modal-root"></div>
+<div id="toast-root"></div>
+
+<script src="/js/api.js"></script>
+<script src="/js/app.js"></script>
+<script src="/js/student.js"></script>
+<script src="/js/admin.js"></script>
+<script>initArt();</script>
+</body>
+</html>
